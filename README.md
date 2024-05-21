@@ -182,7 +182,40 @@ output "useindex" {
 }
 ```
 
+### Definire și Apelare variabile 
+
+Putem să definim în fișierul `main.tf` variabile simple:
+```
+variable "container_name" {
+  description = "The name of the Docker container"
+  type        = string
+  default     = "example_nginx"
+}
+
+variable "container_port" {
+  description = "The external port for the Docker container"
+  type        = number
+  default     = 8000
+}
+```
+Putem să le apelăm folosind prefixul `var` urmat de numele variabilei:
+
+```
+resource "docker_container" "nginx" {
+  image = nginx
+  name  = var.container_name
+  ports {
+    internal = 80
+    external = var.container_port
+  }
+}
+```
+
 ## Task 3 
 
 * Creați un fișier `variables.tf` și definiți o variabilă `docker_image` care să definească o imagine de `busybox`. 
 * Creați un alt container cu imaginea definită anterior în fișierul `main.tf` existent și utilizați variabila creată.
+* Realizați un screenshot cu cele 2 containere create.
+
+## Task 4
+* Distrugeți infrastructura creată și verificați dacă containerele au fost șterse.
